@@ -1,3 +1,6 @@
+FORK of the original WOPI.Host to support Collabora CODE locak docker use.
+WIP - NOT STABLE YET as I work out how to do this
+
 # ![Logo](img/logo48.png) WopiHost
 
 [![Build & Test](https://github.com/petrsvihlik/WopiHost/actions/workflows/integrate.yml/badge.svg)](https://github.com/petrsvihlik/WopiHost/actions/workflows/integrate.yml)
