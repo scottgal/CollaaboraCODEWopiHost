@@ -1,12 +1,12 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using WopiHost.Abstractions;
 using WopiHost.Discovery;
 using WopiHost.Discovery.Enumerations;
-using WopiHost.Url;
-using WopiHost.Abstractions;
 using WopiHost.FileSystemProvider;
+using WopiHost.Url;
 using WopiHost.Web.Models;
-using Microsoft.Extensions.Options;
 
 namespace WopiHost.Web.Controllers;
 
@@ -14,22 +14,24 @@ public class HomeController : Controller
 {
     private WopiUrlBuilder _urlGenerator;
 
-    private IOptionsSnapshot<WopiOptions> WopiOptions { get; }
-    private IWopiStorageProvider StorageProvider { get; }
-    private IDiscoverer Discoverer { get; }
-    private ILoggerFactory LoggerFactory { get; }
-
-
-    //TODO: remove test culture value and load it from configuration SECTION
-    public WopiUrlBuilder UrlGenerator => _urlGenerator ??= new WopiUrlBuilder(Discoverer, new WopiUrlSettings { UiLlcc = new CultureInfo("en-US") });
-
-    public HomeController(IOptionsSnapshot<WopiOptions> wopiOptions, IWopiStorageProvider storageProvider, IDiscoverer discoverer, ILoggerFactory loggerFactory)
+    public HomeController(IOptions<WopiOptions> wopiOptions, IWopiStorageProvider storageProvider,
+        IDiscoverer discoverer, ILoggerFactory loggerFactory)
     {
         WopiOptions = wopiOptions;
         StorageProvider = storageProvider;
         Discoverer = discoverer;
         LoggerFactory = loggerFactory;
     }
+
+    private IOptions<WopiOptions> WopiOptions { get; }
+    private IWopiStorageProvider StorageProvider { get; }
+    private IDiscoverer Discoverer { get; }
+    private ILoggerFactory LoggerFactory { get; }
+
+
+    //TODO: remove test culture value and load it from configuration SECTION
+    public WopiUrlBuilder UrlGenerator => _urlGenerator ??=
+        new WopiUrlBuilder(Discoverer, new WopiUrlSettings { UiLlcc = new CultureInfo("en-US") });
 
     public async Task<ActionResult> Index()
     {
@@ -38,25 +40,20 @@ public class HomeController : Controller
             var files = StorageProvider.GetWopiFiles(StorageProvider.RootContainerPointer.Identifier);
             var fileViewModels = new List<FileViewModel>();
             foreach (var file in files)
-            {
                 fileViewModels.Add(new FileViewModel
                 {
                     FileId = file.Identifier,
                     FileName = file.Name,
                     SupportsEdit = await Discoverer.SupportsActionAsync(file.Extension, WopiActionEnum.Edit),
                     SupportsView = await Discoverer.SupportsActionAsync(file.Extension, WopiActionEnum.View),
-                    IconUri = (await Discoverer.GetApplicationFavIconAsync(file.Extension)) ?? new Uri("file.ico", UriKind.Relative)
+                    IconUri = await Discoverer.GetApplicationFavIconAsync(file.Extension) ??
+                              new Uri("file.ico", UriKind.Relative)
                 });
-            }
             return View(fileViewModels);
         }
-        catch (DiscoveryException ex)
+        catch (Exception ex)
         {
-            return View("Error", ex);
-        }
-        catch (HttpRequestException ex)
-        {
-            return View("Error", ex);
+            return BadRequest(ex.Message);
         }
     }
 
@@ -77,9 +74,10 @@ public class HomeController : Controller
 
 
         var extension = file.Extension.TrimStart('.');
-        ViewData["urlsrc"] = await UrlGenerator.GetFileUrlAsync(extension, new Uri(WopiOptions.Value.HostUrl, $"/wopi/files/{id}"), actionEnum); //TODO: add a test for the URL not to contain double slashes between host and path
+        ViewData["urlsrc"] =
+            await UrlGenerator.GetFileUrlAsync(extension, new Uri($"http://localhost:5003/wopi/files/{id}"),
+                actionEnum); //TODO: add a test for the URL not to contain double slashes between host and path
         ViewData["favicon"] = await Discoverer.GetApplicationFavIconAsync(extension);
         return View();
     }
-
 }

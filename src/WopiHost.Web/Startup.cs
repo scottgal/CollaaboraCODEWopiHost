@@ -1,3 +1,4 @@
+using System.Net;
 using WopiHost.Abstractions;
 using WopiHost.Discovery;
 using WopiHost.FileSystemProvider;
@@ -7,15 +8,15 @@ namespace WopiHost.Web;
 
 public class Startup
 {
-    public IConfiguration Configuration { get; }
-
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
     }
 
+    public IConfiguration Configuration { get; }
+
     /// <summary>
-    /// Sets up the DI container.
+    ///     Sets up the DI container.
     /// </summary>
     public void ConfigureServices(IServiceCollection services)
     {
@@ -29,22 +30,28 @@ public class Startup
 
         services.AddHttpClient<IDiscoveryFileProvider, HttpDiscoveryFileProvider>(client =>
         {
-            client.BaseAddress = new Uri(Configuration[$"{WopiConfigurationSections.WOPI_ROOT}:{nameof(WopiOptions.ClientUrl)}"]);
+            client.BaseAddress =
+                new Uri(Configuration[$"{WopiConfigurationSections.WOPI_ROOT}:{nameof(WopiOptions.ClientUrl)}"]);
+        }).ConfigurePrimaryHttpMessageHandler(x => new HttpClientHandler
+        {
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
         });
-        services.Configure<DiscoveryOptions>(Configuration.GetSection($"{WopiConfigurationSections.DISCOEVRY_OPTIONS}"));
+        services.Configure<DiscoveryOptions>(
+            Configuration.GetSection($"{WopiConfigurationSections.DISCOEVRY_OPTIONS}"));
         services.AddSingleton<IDiscoverer, WopiDiscoverer>();
 
         services.AddScoped<IWopiStorageProvider, WopiFileSystemProvider>();
 
         services.AddLogging(loggingBuilder =>
         {
-            loggingBuilder.AddConsole();//Configuration.GetSection("Logging")
+            loggingBuilder.AddConsole(); //Configuration.GetSection("Logging")
             loggingBuilder.AddDebug();
         });
     }
 
     /// <summary>
-    /// Configure is called after ConfigureServices is called.
+    ///     Configure is called after ConfigureServices is called.
     /// </summary>
     public void Configure(IApplicationBuilder app)
     {
@@ -61,8 +68,8 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                "default",
+                "{controller=Home}/{action=Index}/{id?}");
         });
     }
 }

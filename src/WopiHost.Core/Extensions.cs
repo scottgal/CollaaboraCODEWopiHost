@@ -3,7 +3,7 @@ namespace WopiHost.Core;
 internal static class Extensions
 {
     /// <summary>
-    /// Copies the stream to a byte array.
+    ///     Copies the stream to a byte array.
     /// </summary>
     /// <param name="input">Stream to read from</param>
     /// <returns>Byte array copy of a stream</returns>
@@ -15,10 +15,10 @@ internal static class Extensions
     }
 
     /// <summary>
-    /// Tries to parse integer from string. Returns null if parsing fails.
+    ///     Tries to parse integer from string. Returns null if parsing fails.
     /// </summary>
     /// <param name="s">String to parse</param>
-    /// <returns>Integer parsed from <paramref name="s"/></returns>
+    /// <returns>Integer parsed from <paramref name="s" /></returns>
     public static int? ToNullableInt(this string s)
     {
         if (int.TryParse(s, out var i)) return i;
@@ -26,7 +26,7 @@ internal static class Extensions
     }
 
     /// <summary>
-    /// Converts <see cref="DateTime"/> to UNIX timestamp.
+    ///     Converts <see cref="DateTime" /> to UNIX timestamp.
     /// </summary>
     public static long ToUnixTimestamp(this DateTime dateTime)
     {
@@ -35,8 +35,9 @@ internal static class Extensions
     }
 
     /// <summary>
-    /// Replaces forbidden characters in identity properties with an underscore.
-    /// Accordingly to: https://learn.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/checkfileinfo/checkfileinfo-response#requirements-for-user-identity-properties
+    ///     Replaces forbidden characters in identity properties with an underscore.
+    ///     Accordingly to:
+    ///     https://learn.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/checkfileinfo/checkfileinfo-response#requirements-for-user-identity-properties
     /// </summary>
     /// <param name="identity">Identity property value</param>
     /// <returns>String safe to use as an identity property</returns>

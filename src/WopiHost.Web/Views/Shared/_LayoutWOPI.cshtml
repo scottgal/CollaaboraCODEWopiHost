@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>@ViewBag.Title</title>
-    <link rel="shortcut icon" href="@ViewData["favicon"]" />
+    <link rel="shortcut icon" href="@ViewData["favicon"]"/>
 
     <style type="text/css">
         body {
@@ -32,6 +32,6 @@
 </head>
 <body>
 @RenderBody()
-@await RenderSectionAsync("scripts", required: false)
+@await RenderSectionAsync("scripts", false)
 </body>
 </html>

@@ -2,7 +2,8 @@
 
 public static class ServiceCollectionExtensions
 {
-    public static TConfig Configure<TConfig>(this IServiceCollection services, IConfiguration configuration) where TConfig : class, new()
+    public static TConfig Configure<TConfig>(this IServiceCollection services, IConfiguration configuration)
+        where TConfig : class, new()
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
         if (configuration == null) throw new ArgumentNullException(nameof(configuration));
@@ -13,7 +14,8 @@ public static class ServiceCollectionExtensions
         return config;
     }
 
-    public static TConfig Configure<TConfig>(this IServiceCollection services, IConfiguration configuration, Func<TConfig> pocoProvider) where TConfig : class
+    public static TConfig Configure<TConfig>(this IServiceCollection services, IConfiguration configuration,
+        Func<TConfig> pocoProvider) where TConfig : class
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
         if (configuration == null) throw new ArgumentNullException(nameof(configuration));
@@ -25,7 +27,8 @@ public static class ServiceCollectionExtensions
         return config;
     }
 
-    public static TConfig Configure<TConfig>(this IServiceCollection services, IConfiguration configuration, TConfig config) where TConfig : class
+    public static TConfig Configure<TConfig>(this IServiceCollection services, IConfiguration configuration,
+        TConfig config) where TConfig : class
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
         if (configuration == null) throw new ArgumentNullException(nameof(configuration));

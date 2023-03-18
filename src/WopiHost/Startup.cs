@@ -1,20 +1,20 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Serilog;
 using WopiHost.Abstractions;
 using WopiHost.Core;
 using WopiHost.Core.Models;
-using Serilog;
 
 namespace WopiHost;
 
 public class Startup
 {
-    public IConfiguration Configuration { get; set; }
-
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
     }
+
+    public IConfiguration Configuration { get; set; }
 
     public void ConfigureContainer(ContainerBuilder builder)
     {
@@ -23,14 +23,12 @@ public class Startup
         builder.AddFileProvider(config.StorageProviderAssemblyName);
 
         if (config.UseCobalt)
-        {
             // Add cobalt
             builder.AddCobalt();
-        }
     }
 
     /// <summary>
-    /// Sets up the DI container. Loads types dynamically (http://docs.autofac.org/en/latest/register/scanning.html)
+    ///     Sets up the DI container. Loads types dynamically (http://docs.autofac.org/en/latest/register/scanning.html)
     /// </summary>
     public void ConfigureServices(IServiceCollection services)
     {
@@ -67,20 +65,20 @@ public class Startup
     }
 
     /// <summary>
-    /// Configure is called after ConfigureServices is called.
+    ///     Configure is called after ConfigureServices is called.
     /// </summary>
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+        if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
         //app.UseHttpsRedirection();
         app.UseSerilogRequestLogging(options =>
         {
             options.EnrichDiagnosticContext = LogHelper.EnrichWithWopiDiagnostics;
-            options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} with [WOPI CorrelationID: {" + nameof(WopiHeaders.CORRELATION_ID) + "}, WOPI SessionID: {" + nameof(WopiHeaders.SESSION_ID) + "}] responded {StatusCode} in {Elapsed:0.0000} ms";
+            options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} with [WOPI CorrelationID: {" +
+                                      nameof(WopiHeaders.CORRELATION_ID) + "}, WOPI SessionID: {" +
+                                      nameof(WopiHeaders.SESSION_ID) +
+                                      "}] responded {StatusCode} in {Elapsed:0.0000} ms";
         });
 
         app.UseRouting();
@@ -88,9 +86,6 @@ public class Startup
         // Automatically authenticate
         app.UseAuthentication();
 
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

@@ -8,32 +8,46 @@ using WopiHost.Core.Security.Authentication;
 namespace WopiHost.Core.Controllers;
 
 /// <summary>
-/// Extends the <see cref="ControllerBase"/> with some basic WOPI-related functionality.
+///     Extends the <see cref="ControllerBase" /> with some basic WOPI-related functionality.
 /// </summary>
 public abstract class WopiControllerBase : ControllerBase
 {
     /// <summary>
-    /// Provides access to the storage.
+    ///     Default constructor.
+    /// </summary>
+    /// <param name="storageProvider">Object facilitating access to the storage of WOPI files.</param>
+    /// <param name="securityHandler">Object facilitating security-related actions.</param>
+    /// <param name="wopiHostOptions">WOPI Host configuration object</param>
+    protected WopiControllerBase(IWopiStorageProvider storageProvider, IWopiSecurityHandler securityHandler,
+        IOptionsSnapshot<WopiHostOptions> wopiHostOptions)
+    {
+        StorageProvider = storageProvider;
+        SecurityHandler = securityHandler;
+        WopiHostOptions = wopiHostOptions;
+    }
+
+    /// <summary>
+    ///     Provides access to the storage.
     /// </summary>
     protected IWopiStorageProvider StorageProvider { get; }
 
     /// <summary>
-    /// Provides security-related actions.
+    ///     Provides security-related actions.
     /// </summary>
     protected IWopiSecurityHandler SecurityHandler { get; }
 
     /// <summary>
-    /// WOPI Host configuration object.
+    ///     WOPI Host configuration object.
     /// </summary>
     protected IOptionsSnapshot<WopiHostOptions> WopiHostOptions { get; }
 
     /// <summary>
-    /// WOPI Host base URL
+    ///     WOPI Host base URL
     /// </summary>
     public Uri BaseUrl => new(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host);
 
     /// <summary>
-    /// WOPI authentication token
+    ///     WOPI authentication token
     /// </summary>
     protected string AccessToken
     {
@@ -46,20 +60,7 @@ public abstract class WopiControllerBase : ControllerBase
     }
 
     /// <summary>
-    /// Default constructor.
-    /// </summary>
-    /// <param name="storageProvider">Object facilitating access to the storage of WOPI files.</param>
-    /// <param name="securityHandler">Object facilitating security-related actions.</param>
-    /// <param name="wopiHostOptions">WOPI Host configuration object</param>
-    protected WopiControllerBase(IWopiStorageProvider storageProvider, IWopiSecurityHandler securityHandler, IOptionsSnapshot<WopiHostOptions> wopiHostOptions)
-    {
-        StorageProvider = storageProvider;
-        SecurityHandler = securityHandler;
-        WopiHostOptions = wopiHostOptions;
-    }
-
-    /// <summary>
-    /// Creates a simple URL to access a WOPI object of choice.
+    ///     Creates a simple URL to access a WOPI object of choice.
     /// </summary>
     /// <param name="controller">Controller to be called.</param>
     /// <param name="identifier">Identifier of an object associated to the controller.</param>

@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<ItemGroup>
-		<None Update="OOS2016_discovery.xml;OWA2013_discovery.xml;OO2019_discovery.xml;INVALID_discovery.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Update="OOS2016_discovery.xml;OWA2013_discovery.xml;OO2019_discovery.xml;INVALID_discovery.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\WopiHost.Discovery\WopiHost.Discovery.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\WopiHost.Discovery\WopiHost.Discovery.csproj"/>
+    </ItemGroup>
 </Project>

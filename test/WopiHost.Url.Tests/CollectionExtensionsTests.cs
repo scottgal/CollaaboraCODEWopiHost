@@ -22,7 +22,7 @@ public class CollectionExtensionsTests
     public void MergeTwoDictionaries()
     {
         // Arrange
-        var a = new Dictionary<string, string> { { "A", "B"}, { "C", "D" } };
+        var a = new Dictionary<string, string> { { "A", "B" }, { "C", "D" } };
         var b = new Dictionary<string, string> { { "G", "H" }, { "I", "J" } };
 
         // Act

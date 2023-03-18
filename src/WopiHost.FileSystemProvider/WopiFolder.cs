@@ -2,31 +2,31 @@
 
 namespace WopiHost.FileSystemProvider;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 public class WopiFolder : IWopiFolder
-	{
-		private DirectoryInfo _folderInfo;
+{
+    private DirectoryInfo _folderInfo;
 
-		/// <inheritdoc/>
-		protected string Path { get; set; }
+    /// <summary>
+    ///     Creates an instance of <see cref="WopiFolder" />.
+    /// </summary>
+    /// <param name="path">Path on the file system the folder is located in.</param>
+    /// <param name="folderIdentifier">A unique identifier of a folder.</param>
+    public WopiFolder(string path, string folderIdentifier)
+    {
+        Path = path;
+        Identifier = folderIdentifier;
+    }
 
-		/// <inheritdoc/>
-		protected DirectoryInfo FolderInfo => _folderInfo ??= new DirectoryInfo(Path);
+    /// <inheritdoc />
+    protected string Path { get; set; }
 
-		/// <inheritdoc/>
-		public string Name => FolderInfo.Name;
+    /// <inheritdoc />
+    protected DirectoryInfo FolderInfo => _folderInfo ??= new DirectoryInfo(Path);
 
-		/// <inheritdoc/>
-		public string Identifier { get; }
+    /// <inheritdoc />
+    public string Name => FolderInfo.Name;
 
-		/// <summary>
-		/// Creates an instance of <see cref="WopiFolder"/>.
-		/// </summary>
-		/// <param name="path">Path on the file system the folder is located in.</param>
-		/// <param name="folderIdentifier">A unique identifier of a folder.</param>
-		public WopiFolder(string path, string folderIdentifier)
-		{
-			Path = path;
-			Identifier = folderIdentifier;
-		}
-	}
+    /// <inheritdoc />
+    public string Identifier { get; }
+}

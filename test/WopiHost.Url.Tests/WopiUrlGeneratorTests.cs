@@ -12,14 +12,19 @@ public class WopiUrlGeneratorTests
     public WopiUrlGeneratorTests()
     {
         _discoverer = A.Fake<IDiscoverer>();
-        A.CallTo(() => _discoverer.GetUrlTemplateAsync("xlsx", WopiActionEnum.Edit)).ReturnsLazily(() => "http://owaserver/x/_layouts/xlviewerinternal.aspx?edit=1&<ui=UI_LLCC&><rs=DC_LLCC&>");
-        A.CallTo(() => _discoverer.GetUrlTemplateAsync("docx", WopiActionEnum.View)).ReturnsLazily(() => "http://owaserver/wv/wordviewerframe.aspx?<ui=UI_LLCC&><rs=DC_LLCC&><showpagestats=PERFSTATS&>");
+        A.CallTo(() => _discoverer.GetUrlTemplateAsync("xlsx", WopiActionEnum.Edit)).ReturnsLazily(() =>
+            "http://owaserver/x/_layouts/xlviewerinternal.aspx?edit=1&<ui=UI_LLCC&><rs=DC_LLCC&>");
+        A.CallTo(() => _discoverer.GetUrlTemplateAsync("docx", WopiActionEnum.View)).ReturnsLazily(() =>
+            "http://owaserver/wv/wordviewerframe.aspx?<ui=UI_LLCC&><rs=DC_LLCC&><showpagestats=PERFSTATS&>");
     }
 
     [Theory]
-    [InlineData("xlsx", "http://wopihost:5000/wopi/files/test.xlsx", WopiActionEnum.Edit, "http://owaserver/x/_layouts/xlviewerinternal.aspx?edit=1&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.xlsx")]
-    [InlineData("docx", "http://wopihost:5000/wopi/files/test.docx", WopiActionEnum.View, "http://owaserver/wv/wordviewerframe.aspx?&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.docx")]
-    public async void UrlWithoutAdditionalSettings(string extension, string wopiFileUrl, WopiActionEnum action, string expectedValue)
+    [InlineData("xlsx", "http://wopihost:5000/wopi/files/test.xlsx", WopiActionEnum.Edit,
+        "http://owaserver/x/_layouts/xlviewerinternal.aspx?edit=1&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.xlsx")]
+    [InlineData("docx", "http://wopihost:5000/wopi/files/test.docx", WopiActionEnum.View,
+        "http://owaserver/wv/wordviewerframe.aspx?&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.docx")]
+    public async void UrlWithoutAdditionalSettings(string extension, string wopiFileUrl, WopiActionEnum action,
+        string expectedValue)
     {
         // Arrange
         var urlGenerator = new WopiUrlBuilder(_discoverer);
@@ -32,9 +37,12 @@ public class WopiUrlGeneratorTests
     }
 
     [Theory]
-    [InlineData("xlsx", "http://wopihost:5000/wopi/files/test.xlsx", WopiActionEnum.Edit, "http://owaserver/x/_layouts/xlviewerinternal.aspx?edit=1&ui=en-US&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.xlsx")]
-    [InlineData("docx", "http://wopihost:5000/wopi/files/test.docx", WopiActionEnum.View, "http://owaserver/wv/wordviewerframe.aspx?ui=en-US&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.docx")]
-    public async void UrlWithAdditionalSettings(string extension, string wopiFileUrl, WopiActionEnum action, string expectedValue)
+    [InlineData("xlsx", "http://wopihost:5000/wopi/files/test.xlsx", WopiActionEnum.Edit,
+        "http://owaserver/x/_layouts/xlviewerinternal.aspx?edit=1&ui=en-US&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.xlsx")]
+    [InlineData("docx", "http://wopihost:5000/wopi/files/test.docx", WopiActionEnum.View,
+        "http://owaserver/wv/wordviewerframe.aspx?ui=en-US&WOPISrc=http%3A%2F%2Fwopihost%3A5000%2Fwopi%2Ffiles%2Ftest.docx")]
+    public async void UrlWithAdditionalSettings(string extension, string wopiFileUrl, WopiActionEnum action,
+        string expectedValue)
     {
         // Arrange
         var settings = new WopiUrlSettings { UiLlcc = new CultureInfo("en-US") };
@@ -49,7 +57,8 @@ public class WopiUrlGeneratorTests
 
     [Theory]
     [InlineData("html", "http://wopihost:5000/wopi/files/test.xlsx", WopiActionEnum.Edit, null)]
-    public async void NonExistentTemplate(string extension, string wopiFileUrl, WopiActionEnum action, string expectedValue)
+    public async void NonExistentTemplate(string extension, string wopiFileUrl, WopiActionEnum action,
+        string expectedValue)
     {
         // Arrange
         var urlGenerator = new WopiUrlBuilder(_discoverer);
@@ -82,7 +91,7 @@ public class WopiUrlGeneratorTests
         var validatorTestCategory = ValidatorTestCategoryEnum.All;
 
         // Act
-        var settings = new WopiUrlSettings()
+        var settings = new WopiUrlSettings
         {
             BusinessUser = businessUser,
             UiLlcc = uiLlcc,

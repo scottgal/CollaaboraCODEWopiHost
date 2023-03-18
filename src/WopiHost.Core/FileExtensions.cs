@@ -7,30 +7,26 @@ using WopiHost.Core.Models;
 namespace WopiHost.Core;
 
 /// <summary>
-/// Extension methods for <see cref="IWopiFile"/>.
+///     Extension methods for <see cref="IWopiFile" />.
 /// </summary>
 public static class FileExtensions
 {
     private static readonly SHA256 Sha = SHA256.Create();
 
     /// <summary>
-    /// Returns a CheckFileInfo model according to https://learn.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/checkfileinfo
+    ///     Returns a CheckFileInfo model according to
+    ///     https://learn.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/checkfileinfo
     /// </summary>
     /// <param name="file">File properties of which should be returned.</param>
     /// <param name="principal">A user object which the CheckFileInfo should be correlated with.</param>
     /// <param name="capabilities">WOPI host capabilities</param>
     /// <returns>CheckFileInfo model</returns>
-    public static CheckFileInfo GetCheckFileInfo(this IWopiFile file, ClaimsPrincipal principal, HostCapabilities capabilities)
+    public static CheckFileInfo GetCheckFileInfo(this IWopiFile file, ClaimsPrincipal principal,
+        HostCapabilities capabilities)
     {
-        if (file is null)
-        {
-            throw new ArgumentNullException(nameof(file));
-        }
+        if (file is null) throw new ArgumentNullException(nameof(file));
 
-        if (capabilities is null)
-        {
-            throw new ArgumentNullException(nameof(capabilities));
-        }
+        if (capabilities is null) throw new ArgumentNullException(nameof(capabilities));
 
         var checkFileInfo = new CheckFileInfo();
         if (principal is not null)
@@ -38,7 +34,8 @@ public static class FileExtensions
             checkFileInfo.UserId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToSafeIdentity();
             checkFileInfo.UserFriendlyName = principal.FindFirst(ClaimTypes.Name)?.Value;
 
-            var permissions = (WopiUserPermissions)Enum.Parse(typeof(WopiUserPermissions), principal.FindFirst(WopiClaimTypes.USER_PERMISSIONS).Value);
+            var permissions = (WopiUserPermissions)Enum.Parse(typeof(WopiUserPermissions),
+                principal.FindFirst(WopiClaimTypes.USER_PERMISSIONS).Value);
 
             checkFileInfo.ReadOnly = permissions.HasFlag(WopiUserPermissions.ReadOnly);
             checkFileInfo.RestrictedWebViewOnly = permissions.HasFlag(WopiUserPermissions.RestrictedWebViewOnly);
@@ -79,6 +76,7 @@ public static class FileExtensions
             var checksum = Sha.ComputeHash(stream);
             checkFileInfo.Sha256 = Convert.ToBase64String(checksum);
         }
+
         checkFileInfo.BaseFileName = file.Name;
         checkFileInfo.FileExtension = "." + file.Extension.TrimStart('.');
         checkFileInfo.Version = file.LastWriteTimeUtc.ToString("s", CultureInfo.InvariantCulture);

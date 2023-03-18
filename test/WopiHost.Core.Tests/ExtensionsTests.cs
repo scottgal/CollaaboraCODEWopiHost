@@ -11,7 +11,7 @@ public class ExtensionsTests
 
         // Act
 
-        long actual = dateTime.ToUnixTimestamp();
+        var actual = dateTime.ToUnixTimestamp();
 
         // Assert
         Assert.Equal(ticks, actual);

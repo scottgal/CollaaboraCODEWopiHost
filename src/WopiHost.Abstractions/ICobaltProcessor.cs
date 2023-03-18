@@ -3,12 +3,12 @@
 namespace WopiHost.Abstractions;
 
 /// <summary>
-/// Service that can process MS-FSSHTTP requests.
+///     Service that can process MS-FSSHTTP requests.
 /// </summary>
 public interface ICobaltProcessor
 {
     /// <summary>
-    /// Gets content of a MS-FSSHTTP update action.
+    ///     Gets content of a MS-FSSHTTP update action.
     /// </summary>
     /// <param name="file">File to process</param>
     /// <param name="principal">User editing the file</param>
