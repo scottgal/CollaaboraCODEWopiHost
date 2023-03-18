@@ -20,7 +20,7 @@
       "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://*:5003"
+        "ASPNETCORE_URLS": "https://*:5003"
       }
     }
   }

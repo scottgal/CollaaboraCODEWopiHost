@@ -33,18 +33,18 @@ public static class FileExtensions
         {
             checkFileInfo.UserId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToSafeIdentity();
             checkFileInfo.UserFriendlyName = principal.FindFirst(ClaimTypes.Name)?.Value;
-
-            var permissions = (WopiUserPermissions)Enum.Parse(typeof(WopiUserPermissions),
-                principal.FindFirst(WopiClaimTypes.USER_PERMISSIONS).Value);
-
-            checkFileInfo.ReadOnly = permissions.HasFlag(WopiUserPermissions.ReadOnly);
-            checkFileInfo.RestrictedWebViewOnly = permissions.HasFlag(WopiUserPermissions.RestrictedWebViewOnly);
-            checkFileInfo.UserCanAttend = permissions.HasFlag(WopiUserPermissions.UserCanAttend);
-            checkFileInfo.UserCanNotWriteRelative = permissions.HasFlag(WopiUserPermissions.UserCanNotWriteRelative);
-            checkFileInfo.UserCanPresent = permissions.HasFlag(WopiUserPermissions.UserCanPresent);
-            checkFileInfo.UserCanRename = permissions.HasFlag(WopiUserPermissions.UserCanRename);
-            checkFileInfo.UserCanWrite = permissions.HasFlag(WopiUserPermissions.UserCanWrite);
-            checkFileInfo.WebEditingDisabled = permissions.HasFlag(WopiUserPermissions.WebEditingDisabled);
+            
+            // var permissions = (WopiUserPermissions)Enum.Parse(typeof(WopiUserPermissions),
+            //     principal.FindFirst(WopiClaimTypes.USER_PERMISSIONS).Value);
+            //
+            // checkFileInfo.ReadOnly = permissions.HasFlag(WopiUserPermissions.ReadOnly);
+            // checkFileInfo.RestrictedWebViewOnly = permissions.HasFlag(WopiUserPermissions.RestrictedWebViewOnly);
+            // checkFileInfo.UserCanAttend = permissions.HasFlag(WopiUserPermissions.UserCanAttend);
+            // checkFileInfo.UserCanNotWriteRelative = permissions.HasFlag(WopiUserPermissions.UserCanNotWriteRelative);
+            // checkFileInfo.UserCanPresent = permissions.HasFlag(WopiUserPermissions.UserCanPresent);
+            // checkFileInfo.UserCanRename = permissions.HasFlag(WopiUserPermissions.UserCanRename);
+            // checkFileInfo.UserCanWrite = permissions.HasFlag(WopiUserPermissions.UserCanWrite);
+            // checkFileInfo.WebEditingDisabled = permissions.HasFlag(WopiUserPermissions.WebEditingDisabled);
         }
         else
         {

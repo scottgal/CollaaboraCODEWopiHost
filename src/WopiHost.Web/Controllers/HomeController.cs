@@ -75,7 +75,7 @@ public class HomeController : Controller
 
         var extension = file.Extension.TrimStart('.');
         ViewData["urlsrc"] =
-            await UrlGenerator.GetFileUrlAsync(extension, new Uri($"http://localhost:5003/wopi/files/{id}"),
+            await UrlGenerator.GetFileUrlAsync(extension, new Uri($"http://192.168.0.34:5003/wopi/files/{id}"),
                 actionEnum); //TODO: add a test for the URL not to contain double slashes between host and path
         ViewData["favicon"] = await Discoverer.GetApplicationFavIconAsync(extension);
         return View();

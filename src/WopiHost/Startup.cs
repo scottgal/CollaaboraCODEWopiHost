@@ -22,9 +22,6 @@ public class Startup
         // Add file provider
         builder.AddFileProvider(config.StorageProviderAssemblyName);
 
-        if (config.UseCobalt)
-            // Add cobalt
-            builder.AddCobalt();
     }
 
     /// <summary>

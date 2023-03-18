@@ -51,7 +51,7 @@ public class FilesController : WopiControllerBase
 
     private HostCapabilities HostCapabilities => new()
     {
-        SupportsCobalt = CobaltProcessor is not null,
+        SupportsCobalt = false,
         SupportsGetLock = true,
         SupportsLocks = true,
         SupportsExtendedLockLength = true,
@@ -74,10 +74,10 @@ public class FilesController : WopiControllerBase
     /// <param name="id">File identifier.</param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCheckFileInfo(string id)
+    public IActionResult GetCheckFileInfo(string id)
     {
-        if (!(await _authorizationService.AuthorizeAsync(User, new FileResource(id), WopiOperations.Read)).Succeeded)
-            return Unauthorized();
+       // if (!(await _authorizationService.AuthorizeAsync(User, new FileResource(id), WopiOperations.Read)).Succeeded)
+       //     return Unauthorized();
         return new JsonResult(StorageProvider.GetWopiFile(id)?.GetCheckFileInfo(User, HostCapabilities), null);
     }
 
